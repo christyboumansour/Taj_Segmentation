@@ -9,7 +9,7 @@ import seaborn as sns
 import re
 
 # Load your data
-df = pd.read_csv('C:\\Users\\chris\\Sales1.csv')
+df = pd.read_csv('Sales1.csv')
 
 # Remove rows with a volume of 0
 df = df[df['Volume'] != 0]
