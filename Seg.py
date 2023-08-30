@@ -89,25 +89,37 @@ if tab_selected == "RFM Clustering":
     # Display RFM analysis results
     st.header("RFM Analysis Results")
 
+ 
     
-    # Display scatter plots for Recency vs Frequency, Recency vs Monetary Value, and Frequency vs Monetary Value
-    plt.figure(figsize=(12, 6))
-    plt.subplot(1, 3, 1)
+    import matplotlib.gridspec as gridspec
+    # Create a figure and a GridSpec to arrange subplots
+    fig = plt.figure(figsize=(12, 18))
+    gs = gridspec.GridSpec(3, 1, height_ratios=[1, 1, 1])
+    
+    # Subplot 1
+    ax1 = plt.subplot(gs[0])
     sns.scatterplot(data=customer_history_df, x='recency_log', y='frequency_log', hue='Segment_rfm', palette='Set1')
     plt.xlabel("Recency Log")
     plt.ylabel("Frequency (Log)")
-
-    plt.subplot(1, 3, 2)
+    ax1.set_title("Recency vs Frequency")
+    
+    # Subplot 2
+    ax2 = plt.subplot(gs[1])
     sns.scatterplot(data=customer_history_df, x='recency_log', y='amount_log', hue='Segment_rfm', palette='Set1')
     plt.xlabel("Recency Log")
     plt.ylabel("Monetary Value (Log)")
-
-    plt.subplot(1, 3, 3)
+    ax2.set_title("Recency vs Monetary Value")
+    
+    # Subplot 3
+    ax3 = plt.subplot(gs[2])
     sns.scatterplot(data=customer_history_df, x='frequency_log', y='amount_log', hue='Segment_rfm', palette='Set1')
     plt.xlabel("Frequency (Log)")
     plt.ylabel("Monetary Value (Log)")
-
-    st.pyplot(plt)
+    ax3.set_title("Frequency vs Monetary Value")
+    
+    # Adjust layout and add to Streamlit
+    plt.tight_layout()
+    st.pyplot(fig)
 
     # Display explanations for each segment
     st.subheader("Segment Explanations")
@@ -224,36 +236,38 @@ elif tab_selected == "Purchasing Behavior Clustering":
     # Your data loading and preprocessing code here
     
     # Your clustering code here
+    import matplotlib.gridspec as gridspec
+    # Create a figure and a GridSpec to arrange subplots
+    fig = plt.figure(figsize=(15, 18))
+    gs = gridspec.GridSpec(3, 1, height_ratios=[1, 1, 1])
     
+    # Subplot 1
+    ax1 = plt.subplot(gs[0])
+    sns.scatterplot(data=df1, x='Value', y='Volume', hue='Cluster_Name', palette='Set1')
+    plt.xlabel('Value')
+    plt.ylabel('Volume')
+    ax1.set_title('Value vs Volume')
     
-       # Scatter plot: Value vs Volume
-    fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+    # Subplot 2
+    ax2 = plt.subplot(gs[1])
+    sns.scatterplot(data=df1, x='Price(AED)', y='Volume', hue='Cluster_Name', palette='Set1')
+    plt.xlabel('Price(AED)')
+    plt.ylabel('Volume')
+    ax2.set_title('Price vs Volume')
     
-    sns.scatterplot(data=df1, x='Value', y='Volume', hue='Cluster_Name', palette='Set1', ax=axes[0])
-    axes[0].set_xlabel('Value')
-    axes[0].set_ylabel('Volume')
-    axes[0].set_title("Value vs Volume")
+    # Subplot 3
+    ax3 = plt.subplot(gs[2])
+    sns.scatterplot(data=df1, x='Price(AED)', y='Value', hue='Cluster_Name', palette='Set1')
+    plt.xlabel('Price(AED)')
+    plt.ylabel('Value')
+    ax3.set_title('Price vs Value')
+    ax3.legend(loc='upper right')
     
-    # Scatter plot: Price vs Volume
-    sns.scatterplot(data=df1, x='Price(AED)', y='Volume', hue='Cluster_Name', palette='Set1', ax=axes[1])
-    axes[1].set_xlabel('Price(AED)')
-    axes[1].set_ylabel('Volume')
-    axes[1].set_title("Price vs Volume")
-    
-    # Scatter plot: Price vs Value
-    sns.scatterplot(data=df1, x='Price(AED)', y='Value', hue='Cluster_Name', palette='Set1', ax=axes[2])
-    axes[2].set_xlabel('Price(AED)')
-    axes[2].set_ylabel('Value')
-    axes[2].set_title("Price vs Value")
-    
-    # Add legend to the last plot
-    axes[2].legend(loc='upper right')
-    
-    
-    
-    # Show the plot using Streamlit
+    # Adjust layout and add to Streamlit
+    plt.tight_layout()
     st.pyplot(fig)
         
+    
    
 
     st.subheader("Segment Explanations")
