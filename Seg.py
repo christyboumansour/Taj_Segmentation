@@ -83,8 +83,19 @@ if tab_selected == "RFM Clustering":
     4: "Moderate-Frequency High-Value Shoppers"
 }
 
+    cluster_colors = {
+    0: 'blue',
+    1: 'green',
+    2: 'orange',
+    3: 'purple',
+    4: 'red'
+}
+
+    cluster_palette = sns.color_palette([cluster_colors[c] for c in segment_labels_rfm.keys()])
+    
     # Map cluster labels to segment names for RFM
     customer_history_df['Segment_rfm'] = customer_history_df['Cluster_rfm'].map(segment_labels_rfm)
+    
 
     # Display RFM analysis results
     st.header("RFM Analysis Results")
@@ -98,21 +109,21 @@ if tab_selected == "RFM Clustering":
     
     # Subplot 1
     ax1 = plt.subplot(gs[0])
-    sns.scatterplot(data=customer_history_df, x='recency_log', y='frequency_log', hue='Segment_rfm', palette='Set1')
+    sns.scatterplot(data=customer_history_df, x='recency_log', y='frequency_log', hue='Segment_rfm', palette=cluster_palette)
     plt.xlabel("Recency Log")
     plt.ylabel("Frequency (Log)")
     ax1.set_title("Recency vs Frequency")
     
     # Subplot 2
     ax2 = plt.subplot(gs[1])
-    sns.scatterplot(data=customer_history_df, x='recency_log', y='amount_log', hue='Segment_rfm', palette='Set1')
+    sns.scatterplot(data=customer_history_df, x='recency_log', y='amount_log', hue='Segment_rfm', palette=cluster_palette)
     plt.xlabel("Recency Log")
     plt.ylabel("Monetary Value (Log)")
     ax2.set_title("Recency vs Monetary Value")
     
     # Subplot 3
     ax3 = plt.subplot(gs[2])
-    sns.scatterplot(data=customer_history_df, x='frequency_log', y='amount_log', hue='Segment_rfm', palette='Set1')
+    sns.scatterplot(data=customer_history_df, x='frequency_log', y='amount_log', hue='Segment_rfm', palette=cluster_palette)
     plt.xlabel("Frequency (Log)")
     plt.ylabel("Monetary Value (Log)")
     ax3.set_title("Frequency vs Monetary Value")
@@ -140,6 +151,9 @@ Customers in this category shop regularly, with moderate frequency and spending.
 Cluster 4 - Moderate-Frequency High-Value Shoppers:
 These customers shop moderately often and have above-average spending habits.""")
 
+
+
+    # ... (previous code) ...
 
 if tab_selected == "RFM Clustering":
     # ... (previous RFM Clustering code) ...
@@ -172,9 +186,13 @@ if tab_selected == "RFM Clustering":
     else:
         st.write("No matching customers found.")
 
+# ... (rest of the code) ...
 
 
 elif tab_selected == "Purchasing Behavior Clustering":
+    # ... (previous Purchasing Behavior Clustering code) ...
+
+# ... (rest of the code) ...
 
 
 
@@ -215,16 +233,28 @@ elif tab_selected == "Purchasing Behavior Clustering":
 4: 'Moderate-Value, Low-to-Moderate-Volume Customers'
 }
     
+    
+    cluster_colors = {
+    0: 'blue',
+    1: 'green',
+    2: 'orange',
+    3: 'purple',
+    4: 'red'
+}
     # Specify the selected cluster numbers
     selected_clusters = list(cluster_names.keys())
     
     
     df1 = df1[df1['Cluster_pb'].isin(selected_clusters)]
     
+    cluster_palette = sns.color_palette([cluster_colors[c] for c in cluster_names.keys()])
+    
     # Add a new column 'Cluster_Name' to the DataFrame
     df1['Cluster_Name'] = df1['Cluster_pb'].map(cluster_names)
     
    
+
+    # Your data loading and preprocessing code here
     
     # Your clustering code here
     import matplotlib.gridspec as gridspec
@@ -234,21 +264,21 @@ elif tab_selected == "Purchasing Behavior Clustering":
     
     # Subplot 1
     ax1 = plt.subplot(gs[0])
-    sns.scatterplot(data=df1, x='Value', y='Volume', hue='Cluster_Name', palette='Set1')
+    sns.scatterplot(data=df1, x='Value', y='Volume', hue='Cluster_Name', palette=cluster_palette)
     plt.xlabel('Value')
     plt.ylabel('Volume')
     ax1.set_title('Value vs Volume')
     
     # Subplot 2
     ax2 = plt.subplot(gs[1])
-    sns.scatterplot(data=df1, x='Price(AED)', y='Volume', hue='Cluster_Name', palette='Set1')
+    sns.scatterplot(data=df1, x='Price(AED)', y='Volume', hue='Cluster_Name', palette=cluster_palette)
     plt.xlabel('Price(AED)')
     plt.ylabel('Volume')
     ax2.set_title('Price vs Volume')
     
     # Subplot 3
     ax3 = plt.subplot(gs[2])
-    sns.scatterplot(data=df1, x='Price(AED)', y='Value', hue='Cluster_Name', palette='Set1')
+    sns.scatterplot(data=df1, x='Price(AED)', y='Value', hue='Cluster_Name', palette=cluster_palette)
     plt.xlabel('Price(AED)')
     plt.ylabel('Value')
     ax3.set_title('Price vs Value')
@@ -301,4 +331,5 @@ Cluster 4: "Moderate-Value, Low-to-Moderate-Volume Customers" - Customers with m
     else:
         st.write("No matching customers found.")
 
+# ... (rest of the code) ...
 
