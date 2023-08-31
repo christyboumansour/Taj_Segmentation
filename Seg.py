@@ -123,7 +123,7 @@ if tab_selected == "RFM Clustering":
 
     # Display explanations for each segment
     st.subheader("Segment Explanations")
-    st.write("""Cluster 0: Churning Customers are customers who have shown a decline in buying activity.
+    st.write("""
              
 Cluster 0 - Regular Shoppers:
 These are customers who shop regularly but not frequently. They have average spending habits.
@@ -140,9 +140,6 @@ Customers in this category shop regularly, with moderate frequency and spending.
 Cluster 4 - Moderate-Frequency High-Value Shoppers:
 These customers shop moderately often and have above-average spending habits.""")
 
-
-
-    # ... (previous code) ...
 
 if tab_selected == "RFM Clustering":
     # ... (previous RFM Clustering code) ...
@@ -175,13 +172,9 @@ if tab_selected == "RFM Clustering":
     else:
         st.write("No matching customers found.")
 
-# ... (rest of the code) ...
 
 
 elif tab_selected == "Purchasing Behavior Clustering":
-    # ... (previous Purchasing Behavior Clustering code) ...
-
-# ... (rest of the code) ...
 
 
 
@@ -232,8 +225,6 @@ elif tab_selected == "Purchasing Behavior Clustering":
     df1['Cluster_Name'] = df1['Cluster_pb'].map(cluster_names)
     
    
-
-    # Your data loading and preprocessing code here
     
     # Your clustering code here
     import matplotlib.gridspec as gridspec
@@ -310,5 +301,4 @@ Cluster 4: "Moderate-Value, Low-to-Moderate-Volume Customers" - Customers with m
     else:
         st.write("No matching customers found.")
 
-# ... (rest of the code) ...
 
