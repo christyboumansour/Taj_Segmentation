@@ -85,10 +85,10 @@ if tab_selected == "RFM Clustering":
     
     # Define consistent cluster colors based on the desired order
     cluster_colors = {
-        "Regular Shoppers": 'blue',
-        "Occasional Shoppers": 'green',
-        "High-Value and Frequency Shoppers": 'orange',
-        "Balanced Shoppers": 'purple',
+        "Regular Shoppers": 'green',
+        "Occasional Shoppers": 'yellow',
+        "High-Value and Frequency Shoppers": 'purple',
+        "Balanced Shoppers": 'blue',
         "Moderate-Frequency High-Value Shoppers": 'red'
     }
     
