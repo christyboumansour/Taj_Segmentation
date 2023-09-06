@@ -73,31 +73,31 @@ if tab_selected == "RFM Clustering":
 
     # Add cluster labels to customer_history_df for RFM analysis
     customer_history_df['Cluster_rfm'] = labels_rfm
-
-    # Define segment labels for RFM
-    segment_labels_rfm = cluster_labels = {
-    0: "Regular Shoppers",
-    1: "Occasional Shoppers",
-    2: "High-Value and Frequency Shoppers",
-    3: "Balanced Shoppers",
-    4: "Moderate-Frequency High-Value Shoppers"
-}
-
+    
+        # Define segment labels for RFM
+    segment_labels_rfm = {
+        0: "Regular Shoppers",
+        1: "Occasional Shoppers",
+        2: "High-Value and Frequency Shoppers",
+        3: "Balanced Shoppers",
+        4: "Moderate-Frequency High-Value Shoppers"
+    }
+    
+    # Define consistent cluster colors based on the desired order
     cluster_colors = {
-    0: 'blue',
-    1: 'green',
-    2: 'orange',
-    3: 'purple',
-    4: 'red'
-}
-
-    cluster_palette = sns.color_palette([cluster_colors[c] for c in segment_labels_rfm.keys()])
+        "Regular Shoppers": 'blue',
+        "Occasional Shoppers": 'green',
+        "High-Value and Frequency Shoppers": 'orange',
+        "Balanced Shoppers": 'purple',
+        "Moderate-Frequency High-Value Shoppers": 'red'
+    }
     
     # Map cluster labels to segment names for RFM
     customer_history_df['Segment_rfm'] = customer_history_df['Cluster_rfm'].map(segment_labels_rfm)
     
-    cluster_palette = sns.color_palette([cluster_colors[c] for c in segment_labels_rfm.keys()])
-    # Display RFM analysis results
+    # Create a consistent cluster_palette using the cluster_colors dictionary
+    cluster_palette = sns.color_palette([cluster_colors[label] for label in segment_labels_rfm.values()])
+
     st.header("RFM Analysis Results")
 
  
