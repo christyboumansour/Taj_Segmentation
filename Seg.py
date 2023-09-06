@@ -96,7 +96,7 @@ if tab_selected == "RFM Clustering":
     # Map cluster labels to segment names for RFM
     customer_history_df['Segment_rfm'] = customer_history_df['Cluster_rfm'].map(segment_labels_rfm)
     
-
+    cluster_palette = sns.color_palette([cluster_colors[c] for c in segment_labels_rfm.keys()])
     # Display RFM analysis results
     st.header("RFM Analysis Results")
 
