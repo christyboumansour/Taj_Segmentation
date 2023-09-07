@@ -11,6 +11,8 @@ import re
 # Loading data
 df = pd.read_csv('Sales1.csv')
 
+
+
 # Removing rows with a volume of 0
 df = df[df['Volume'] != 0]
 
@@ -70,14 +72,15 @@ if tab_selected == "RFM Clustering":
     # Apply K-means clustering for RFM analysis
     K_best_rfm = 5  # Based on your analysis
     model_rfm = KMeans(n_clusters=K_best_rfm, random_state=101)
-    model_rfm = model_rfm.fit(customer_history_df[feature_vector_rfm])
-    labels_rfm = model_rfm.labels_
+    labels_rfm = model_rfm.fit_predict(customer_history_df[feature_vector_rfm])
 
-    # Add cluster labels to customer_history_df for RFM analysis
-    customer_history_df['Cluster_rfm'] = labels_rfm
+# Add cluster labels to customer_history_df for RFM analysis
+    customer_history_df['Cluster'] = labels_rfm
+    
+    
 
     # Define segment labels for RFM
-    segment_labels_rfm = cluster_labels = {
+    segment_labels_rfm = {
     0: "Regular Shoppers",
     1: "Occasional Shoppers",
     2: "High-Value and Frequency Shoppers",
@@ -92,11 +95,16 @@ if tab_selected == "RFM Clustering":
     3: 'purple',
     4: 'red'
 }
-
+    
+    # Specify the selected cluster numbers
+    selected_clusters = list(segment_labels_rfm.keys())
+    
+    
+    customer_history_df= customer_history_df[customer_history_df['Cluster'].isin(selected_clusters)]
     cluster_palette = sns.color_palette([cluster_colors[c] for c in segment_labels_rfm.keys()])
     
     # Map cluster labels to segment names for RFM
-    customer_history_df['Segment_rfm'] = customer_history_df['Cluster_rfm'].map(segment_labels_rfm)
+    customer_history_df['Segment_rfm'] = customer_history_df['Cluster'].map(segment_labels_rfm)
     
 
     # Display RFM analysis results
@@ -156,36 +164,36 @@ These customers shop moderately often and have above-average spending habits."""
 
 
 
-if tab_selected == "RFM Clustering":
+# if tab_selected == "RFM Clustering":
 
 
-    # Display a subset of the DataFrame with recency, frequency, and monetary values
-    st.subheader("Subset of Customer Data")
-    subset_columns = ['Customer Name', 'recency', 'frequency', 'Value']
-    subset_df = customer_history_df[subset_columns]
-    st.dataframe(subset_df)
+#     # Display a subset of the DataFrame with recency, frequency, and monetary values
+#     st.subheader("Subset of Customer Data")
+#     subset_columns = ['Customer Name', 'recency', 'frequency', 'Value']
+#     subset_df = customer_history_df[subset_columns]
+#     st.dataframe(subset_df)
 
-    # Allow the user to input a customer name for quick search
-    search_customer = st.text_input("Search for a Customer:", "")
+#     # Allow the user to input a customer name for quick search
+#     search_customer = st.text_input("Search for a Customer:", "")
 
-    # Find the closest matches to the searched customer name
-    closest_matches = subset_df['Customer Name'][subset_df['Customer Name'].str.contains(re.escape(search_customer), case=False, regex=True)]
+#     # Find the closest matches to the searched customer name
+#     closest_matches = subset_df['Customer Name'][subset_df['Customer Name'].str.contains(re.escape(search_customer), case=False, regex=True)]
 
-    if len(closest_matches) > 0:
-        selected_customer = st.selectbox("Select a Customer:", closest_matches.tolist())
-        selected_row = subset_df[subset_df['Customer Name'] == selected_customer].iloc[0]
+#     if len(closest_matches) > 0:
+#         selected_customer = st.selectbox("Select a Customer:", closest_matches.tolist())
+#         selected_row = subset_df[subset_df['Customer Name'] == selected_customer].iloc[0]
 
-        st.subheader(f"RFM Attributes for {selected_customer}")
-        st.write(f"Recency: {selected_row['recency']} days")
-        st.write(f"Frequency: {selected_row['frequency']} purchases")
-        st.write(f"Monetary Value: {selected_row['Value']} AED")
+#         st.subheader(f"RFM Attributes for {selected_customer}")
+#         st.write(f"Recency: {selected_row['recency']} days")
+#         st.write(f"Frequency: {selected_row['frequency']} purchases")
+#         st.write(f"Monetary Value: {selected_row['Value']} AED")
 
-        # Display the cluster information for the selected customer
-        cluster_name = customer_history_df[customer_history_df['Customer Name'] == selected_customer]['Segment_rfm'].iloc[0]
-        st.write(f"Cluster: {cluster_name}")
+#         # Display the cluster information for the selected customer
+#         cluster_name = customer_history_df[customer_history_df['Customer Name'] == selected_customer]['Segment_rfm'].iloc[0]
+#         st.write(f"Cluster: {cluster_name}")
 
-    else:
-        st.write("No matching customers found.")
+#     else:
+#         st.write("No matching customers found.")
 
 
 
