@@ -71,11 +71,11 @@ if tab_selected == "RFM Clustering":
 
    # Define segment labels for RFM
     segment_labels_rfm = {
-        0: "Regular Shoppers",
+        0: "Moderate-Frequency High-Value Shoppers",
         1: "Occasional Shoppers",
-        2: "High-Value and Frequency Shoppers",
-        3: "Balanced Shoppers",
-        4: "Moderate-Frequency High-Value Shoppers"
+        2: "Balanced Shoppers",
+        3: "Regular Shoppers",
+        4: "High-Value and Frequency Shoppers",
     }
     
     # Define cluster colors based on their order
@@ -150,13 +150,12 @@ if tab_selected == "RFM Clustering":
     
     # Add a custom legend below the subplots
     legend_labels = {
-        'blue': "Regular Shoppers",
-        'green': "Occasional Shoppers",
-        'orange': "High-Value and Frequency Shoppers",
-        'purple': "Balanced Shoppers",
-        'red': "Moderate-Frequency High-Value Shoppers"
-    }
-    
+    'purple': "Limited Shoppers",
+    'green': "Occasional Shoppers",
+    'red': "High-Value and Frequency Shoppers",
+    'orange': "Balanced Shoppers",
+    'blue': "Moderate-Frequency High-Value Shoppers"}
+        
     custom_legend = [plt.Line2D([0], [0], marker='o', color='w', markerfacecolor=color, markersize=20, label=label) for color, label in legend_labels.items()]
     
     # Add the custom legend below the subplots
@@ -166,7 +165,6 @@ if tab_selected == "RFM Clustering":
     # Adjust layout and add to Streamlit
     plt.tight_layout()
     st.pyplot(fig)
-
 
     # Display explanations for each segment
     st.subheader("Segment Explanations")
