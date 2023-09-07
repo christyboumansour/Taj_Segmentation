@@ -69,48 +69,55 @@ if tab_selected == "RFM Clustering":
     # Define feature vector for RFM
     feature_vector_rfm = ['recency_log', 'frequency_log', 'amount_log']
 
+   # Define segment labels for RFM
+    segment_labels_rfm = {
+        0: "Regular Shoppers",
+        1: "Occasional Shoppers",
+        2: "High-Value and Frequency Shoppers",
+        3: "Balanced Shoppers",
+        4: "Moderate-Frequency High-Value Shoppers"
+    }
+    
+    # Define cluster colors based on their order
+    cluster_colors = {
+        0: 'blue',
+        1: 'green',
+        2: 'orange',
+        3: 'purple',
+        4: 'red'
+    }
+    
     # Apply K-means clustering for RFM analysis
     K_best_rfm = 5  # Based on your analysis
     model_rfm = KMeans(n_clusters=K_best_rfm, random_state=101)
     labels_rfm = model_rfm.fit_predict(customer_history_df[feature_vector_rfm])
-
-# Add cluster labels to customer_history_df for RFM analysis
+    
+    # Add cluster labels to customer_history_df for RFM analysis
     customer_history_df['Cluster'] = labels_rfm
     
-    
-
-    # Define segment labels for RFM
-    segment_labels_rfm = {
-    0: "Regular Shoppers",
-    1: "Occasional Shoppers",
-    2: "High-Value and Frequency Shoppers",
-    3: "Balanced Shoppers",
-    4: "Moderate-Frequency High-Value Shoppers"
-}
-
-    cluster_colors = {
-    0: 'blue',
-    1: 'green',
-    2: 'orange',
-    3: 'purple',
-    4: 'red'
-}
-    
-    # Specify the selected cluster numbers
-    selected_clusters = list(segment_labels_rfm.keys())
-    
-    
-    customer_history_df= customer_history_df[customer_history_df['Cluster'].isin(selected_clusters)]
-    cluster_palette = sns.color_palette([cluster_colors[c] for c in segment_labels_rfm.keys()])
+    # Create a custom color palette for each unique cluster label
+    unique_clusters = customer_history_df['Cluster'].unique()
+    custom_palette = {cluster: cluster_colors[cluster] for cluster in unique_clusters}
     
     # Map cluster labels to segment names for RFM
     customer_history_df['Segment_rfm'] = customer_history_df['Cluster'].map(segment_labels_rfm)
     
-
-    # Display RFM analysis results
+    # Create a custom color palette for the cluster labels
+    cluster_palette = [custom_palette[cluster] for cluster in customer_history_df['Cluster']]
+    
+    # Create a custom legend
+    legend_labels = {cluster: f"{segment_labels_rfm[cluster]} ({cluster_colors[cluster]})" for cluster in unique_clusters}
+    custom_legend = [plt.Line2D([0], [0], marker='o', color='w', markerfacecolor=cluster_colors[cluster], markersize=10, label=label) for cluster, label in legend_labels.items()]
+    
+   # Create a custom color palette for each unique cluster label
+    unique_clusters = customer_history_df['Cluster'].unique()
+    custom_palette = {cluster: cluster_colors[cluster] for cluster in unique_clusters}
+    
+    # Map cluster labels to colors for the hue parameter
+    customer_history_df['Cluster_color'] = customer_history_df['Cluster'].map(custom_palette)
+    
+    # Display RFM analysis results with the custom legend below the subplots
     st.header("RFM Analysis Results")
-
- 
     
     import matplotlib.gridspec as gridspec
     # Create a figure and a GridSpec to arrange subplots
@@ -119,28 +126,47 @@ if tab_selected == "RFM Clustering":
     
     # Subplot 1
     ax1 = plt.subplot(gs[0])
-    sns.scatterplot(data=customer_history_df, x='recency_log', y='frequency_log', hue='Segment_rfm', palette=cluster_palette)
+    sns.scatterplot(data=customer_history_df, x='recency_log', y='frequency_log', hue='Cluster_color')
     plt.xlabel("Recency Log")
     plt.ylabel("Frequency (Log)")
     ax1.set_title("Recency vs Frequency")
+    ax1.get_legend().remove()  # Remove default legend
     
     # Subplot 2
     ax2 = plt.subplot(gs[1])
-    sns.scatterplot(data=customer_history_df, x='recency_log', y='amount_log', hue='Segment_rfm', palette=cluster_palette)
+    sns.scatterplot(data=customer_history_df, x='recency_log', y='amount_log', hue='Cluster_color')
     plt.xlabel("Recency Log")
     plt.ylabel("Monetary Value (Log)")
     ax2.set_title("Recency vs Monetary Value")
+    ax2.get_legend().remove()  # Remove default legend
     
     # Subplot 3
     ax3 = plt.subplot(gs[2])
-    sns.scatterplot(data=customer_history_df, x='frequency_log', y='amount_log', hue='Segment_rfm', palette=cluster_palette)
+    sns.scatterplot(data=customer_history_df, x='frequency_log', y='amount_log', hue='Cluster_color')
     plt.xlabel("Frequency (Log)")
     plt.ylabel("Monetary Value (Log)")
     ax3.set_title("Frequency vs Monetary Value")
+    ax3.get_legend().remove()  # Remove default legend
+    
+    # Add a custom legend below the subplots
+    legend_labels = {
+        'blue': "Regular Shoppers",
+        'green': "Occasional Shoppers",
+        'orange': "High-Value and Frequency Shoppers",
+        'purple': "Balanced Shoppers",
+        'red': "Moderate-Frequency High-Value Shoppers"
+    }
+    
+    custom_legend = [plt.Line2D([0], [0], marker='o', color='w', markerfacecolor=color, markersize=20, label=label) for color, label in legend_labels.items()]
+    
+    # Add the custom legend below the subplots
+    fig.legend(handles=custom_legend, loc='lower center', ncol=len(legend_labels))
+    fig.subplots_adjust(bottom=0.1)  # Adjust the bottom margin to make room for the legend
     
     # Adjust layout and add to Streamlit
     plt.tight_layout()
     st.pyplot(fig)
+
 
     # Display explanations for each segment
     st.subheader("Segment Explanations")
